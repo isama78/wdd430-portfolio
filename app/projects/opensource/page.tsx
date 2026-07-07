@@ -1,15 +1,23 @@
 // app/projects/opensource/page.tsx
 import { getBaseUrl } from "@/lib/get-base-url";
 import { Project } from "@/lib/projects-db";
+import { headers } from "next/headers";
 
 async function getOpenSourceProjects(): Promise<Project[]> {
-  const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/projects?type=opensource`, { cache: "no-store" });
-  
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = host?.includes("localhost") ? "http" : "https";
+
+  const res = await fetch(
+    `${protocol}://${host}/api/projects?type=opensource`,
+    {
+      cache: "no-store",
+    },
+  );
+
   if (!res.ok) {
     throw new Error("Error loading open source projects");
   }
-  
   return res.json();
 }
 
@@ -19,14 +27,25 @@ export default async function OpenSourcePage() {
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Open Source Projects</h1>
-      {/* Mapeo idéntico al anterior o usando un componente reutilizable */}
       <div className="grid gap-4">
         {projects.map((project) => (
-          <div key={project.id} className="p-4 bg-zinc-900 border border-zinc-800 rounded-xl">
-            <h2 className="text-xl font-semibold text-white">{project.title}</h2>
+          <div
+            key={project.id}
+            className="p-4 bg-zinc-900 border border-zinc-800 rounded-xl"
+          >
+            <h2 className="text-xl font-semibold text-white">
+              {project.title}
+            </h2>
             <p className="text-zinc-400">{project.description}</p>
-            <p className="text-zinc-400">Technologies: {project.technologies.join(', ')}</p>
-            <a className="text-blue-500" href={project.link} target="_blank" rel="noopener noreferrer">
+            <p className="text-zinc-400">
+              Technologies: {project.technologies.join(", ")}
+            </p>
+            <a
+              className="text-blue-500"
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               View on GitHub
             </a>
           </div>

@@ -1,10 +1,16 @@
 // app/projects/school/page.tsx
 import { getBaseUrl } from "@/lib/get-base-url";
 import { Project } from "@/lib/projects-db";
-  
+import { headers } from "next/headers";
+
 async function getSchoolProjects(): Promise<Project[]> {
-  const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/projects?type=school`, { cache: "no-store" });
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = host?.includes("localhost") ? "http" : "https";
+
+  const res = await fetch(`${protocol}://${host}/api/projects?type=school`, { 
+    cache: "no-store" 
+  });
   
   if (!res.ok) {
     throw new Error("Error loading school projects");

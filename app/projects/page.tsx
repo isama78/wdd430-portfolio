@@ -1,20 +1,25 @@
 // app/projects/page.tsx
-// import { getBaseUrl } from "@/lib/get-base-url";
-import { getProjects } from "@/lib/projects-db"; 
+import { Project } from "@/lib/projects-db"; 
+import { headers } from "next/headers";
 
-// async function getProjects(): Promise<Project[]> {
-//   const baseUrl = getBaseUrl();
-//   const res = await fetch(`${baseUrl}/api/projects`, { cache: "no-store" });
+async function getProjects(): Promise<Project[]> {
+  const headersList = await headers();
+  const host = headersList.get("host");
+  const protocol = host?.includes("localhost") ? "http" : "https";
   
-//   if (!res.ok) {
-//     throw new Error("Error loading projects");
-//   }
+  const res = await fetch(`${protocol}://${host}/api/projects`, { 
+    cache: "no-store"
+  });
   
-//   return res.json();
-// }
+  if (!res.ok) {
+    throw new Error("Error loading projects");
+  }
+  
+  return res.json();
+}
 
 export default async function ProjectsPage() {
-  const projects = getProjects();
+  const projects = await getProjects();
 
   return (
     <div className="p-8">
