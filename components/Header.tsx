@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import NavLinks from './NavLinks';
 
 export default function Header() {
   return (
@@ -7,14 +7,7 @@ export default function Header() {
         <div className="text-xl font-semibold tracking-tight text-foreground">
           Mauro <span className="text-accent-glow font-light">Isa</span>
         </div>
-        <ul className="flex gap-8 text-sm font-medium text-muted-custom">
-          <li>
-            <Link href="/" className="hover:text-accent-glow transition-colors">Home</Link>
-          </li>
-          <li>
-            <Link href="/about" className="hover:text-accent-glow transition-colors">About</Link>
-          </li>
-        </ul>
+        <NavLinks />
       </nav>
     </header>
   );
