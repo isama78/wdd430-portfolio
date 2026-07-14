@@ -9,7 +9,7 @@ export async function GET(
   if (isNaN(Number(id))) {
     return NextResponse.json({ error: "Invalid project ID" }, { status: 400 });
   }
-  const project = getProjectById(Number(id));
+  const project = await getProjectById(Number(id));
   if (project) {
     return NextResponse.json(project);
   }
