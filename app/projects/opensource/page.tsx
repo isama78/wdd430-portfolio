@@ -1,5 +1,4 @@
 // app/projects/opensource/page.tsx
-import { getBaseUrl } from "@/lib/get-base-url";
 import { Project } from "@/lib/projects-db";
 import { headers } from "next/headers";
 
@@ -23,7 +22,7 @@ async function getOpenSourceProjects(): Promise<Project[]> {
 
 export default async function OpenSourcePage() {
   const projects = await getOpenSourceProjects();
-
+  
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-6">Open Source Projects</h1>
@@ -40,14 +39,16 @@ export default async function OpenSourcePage() {
             <p className="text-zinc-400">
               Technologies: {project.technologies.join(", ")}
             </p>
-            <a
-              className="text-blue-500"
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
+            {project.link && (
+              <a
+                className="text-blue-500"
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on GitHub
+              </a>
+            )}
           </div>
         ))}
       </div>

@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 
 export default function NavLinks() {
   const pathname = usePathname();
-  console.log(pathname === "/");
   return (
     <ul className="flex gap-8 text-sm font-medium text-muted-custom">
       <li>

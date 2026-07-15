@@ -1,5 +1,4 @@
 // app/projects/school/page.tsx
-import { getBaseUrl } from "@/lib/get-base-url";
 import { Project } from "@/lib/projects-db";
 import { headers } from "next/headers";
 
@@ -31,9 +30,12 @@ export default async function SchoolPage() {
             <h2 className="text-xl font-semibold text-white">{project.title}</h2>
             <p className="text-zinc-400">{project.description}</p>
             <p className="text-zinc-400">Technologies: {project.technologies.join(', ')}</p>
-            <a className="text-blue-500" href={project.link} target="_blank" rel="noopener noreferrer">
-              View on GitHub
-            </a>
+            {project.link && (
+              <a
+                className="text-blue-500" href={project.link} target="_blank" rel="noopener noreferrer">
+                View on GitHub
+              </a>
+            )}
           </div>
         ))}
       </div>
