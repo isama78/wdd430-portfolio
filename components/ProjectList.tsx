@@ -13,7 +13,7 @@ interface ProjectListProps {
 
 export default function ProjectList({ projects }: ProjectListProps) {
   return (
-    <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
       {projects.map((project, index) => (
         <ProjectCard key={index} {...project} />
       ))}

@@ -1,44 +1,24 @@
 // app/projects/school/page.tsx
-import { Project } from "@/lib/projects-db";
-import { headers } from "next/headers";
-
-async function getSchoolProjects(): Promise<Project[]> {
-  const headersList = await headers();
-  const host = headersList.get("host");
-  const protocol = host?.includes("localhost") ? "http" : "https";
-
-  const res = await fetch(`${protocol}://${host}/api/projects?type=school`, { 
-    cache: "no-store" 
-  });
-  
-  if (!res.ok) {
-    throw new Error("Error loading school projects");
-  }
-  
-  return res.json();
-}
+import SchoolProjectList from "@/components/SchoolProjectList";
+import ProjectCardSkeleton from "@/components/skeletons";
+import { Suspense } from "react";
 
 export default async function SchoolPage() {
-  const projects = await getSchoolProjects();
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">University Projects</h1>
-      <div className="grid gap-4">
-        {projects.map((project) => (
-          <div key={project.id} className="p-4 bg-zinc-900 border border-zinc-800 rounded-xl">
-            <h2 className="text-xl font-semibold text-white">{project.title}</h2>
-            <p className="text-zinc-400">{project.description}</p>
-            <p className="text-zinc-400">Technologies: {project.technologies.join(', ')}</p>
-            {project.link && (
-              <a
-                className="text-blue-500" href={project.link} target="_blank" rel="noopener noreferrer">
-                View on GitHub
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+    <main className="max-w-5xl mx-auto px-6 py-16">
+      <header className="mb-12">
+        <h1 className="text-3xl font-light text-foreground mb-2">
+          Academic <span className="text-accent-glow font-normal">Projects</span>
+        </h1>
+        <p className="text-muted-custom text-sm">
+          These projects were developed as part of my computer science coursework at BYU-Idaho.
+        </p>
+      </header>
+
+      <Suspense fallback={<ProjectCardSkeleton />}>
+        <SchoolProjectList />
+      </Suspense>
+    </main>
   );
 }
