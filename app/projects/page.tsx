@@ -1,37 +1,40 @@
-// app/projects/page.tsx
-import { Project } from "@/lib/projects-db"; 
-import { headers } from "next/headers";
+import { ProjectSearch } from '@/components/ProjectSearch';
+import ProjectList from '@/components/ProjectList';
+import Pagination from '@/components/Pagination';
+import { fetchFilteredProjects, fetchProjectsPages } from '@/lib/projects-db';
 
-async function getProjects(): Promise<Project[]> {
-  const headersList = await headers();
-  const host = headersList.get("host");
-  const protocol = host?.includes("localhost") ? "http" : "https";
-  
-  const res = await fetch(`${protocol}://${host}/api/projects`, { 
-    cache: "no-store"
-  });
-  
-  if (!res.ok) {
-    throw new Error("Error loading projects");
-  }
-  
-  return res.json();
+export const dynamic = 'force-dynamic';
+
+interface PageProps {
+  searchParams?: Promise<{
+    query?: string;
+    page?: string;
+  }>;
 }
 
-export default async function ProjectsPage() {
-  const projects = await getProjects();
+export default async function ProjectsPage({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const query = params?.query || '';
+  const currentPage = Number(params?.page) || 1;
+
+  const projects = await fetchFilteredProjects(query, currentPage);
+  const totalPages = await fetchProjectsPages(query); //
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">All Projects</h1>
-      <div className="grid gap-4">
-        {projects.map((project) => (
-          <div key={project.id} className="p-4 bg-zinc-900 border border-zinc-800 rounded-xl">
-            <h2 className="text-xl font-semibold text-white">{project.title}</h2>
-            <p className="text-zinc-400">{project.description}</p>
-          </div>
-        ))}
+    <main className="max-w-5xl mx-auto px-6 py-16">
+      <header className="mb-12">
+        <h1 className="text-3xl font-light text-foreground mb-4">
+          Open Source <span className="text-accent-glow font-normal">Projects</span>
+        </h1>
+        
+        <ProjectSearch />
+      </header>
+
+      <ProjectList projects={projects} />
+
+      <div className="mt-12 flex justify-center">
+        <Pagination totalPages={totalPages} currentPage={currentPage} />
       </div>
-    </div>
+    </main>
   );
 }

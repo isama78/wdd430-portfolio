@@ -5,7 +5,7 @@ export interface Project {
   id: number;
   title: string;
   description: string;
-  type: 'opensource' | 'school';
+  type: "opensource" | "school";
   technologies: string[];
   link?: string;
 }
@@ -26,4 +26,44 @@ export async function getProjectById(id: number): Promise<Project | null> {
     SELECT * FROM projects WHERE id = ${id}
   `;
   return rows[0] ?? null;
+}
+
+const ITEMS_PER_PAGE = 6;
+
+export async function fetchFilteredProjects(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  const searchQuery = `%${query}%`;
+
+  const { rows } = await sql<Project>`
+    SELECT * FROM projects
+    WHERE 
+    (
+      title ILIKE ${searchQuery}
+      OR description ILIKE ${searchQuery}
+      OR array_to_string(technologies, ' ') ILIKE ${searchQuery}
+    )
+    ORDER BY id
+    LIMIT ${ITEMS_PER_PAGE}
+    OFFSET ${offset}
+  `;
+  return rows;
+}
+
+export async function fetchProjectsPages(query: string) {
+  const searchQuery = `%${query}%`;
+
+  const { rows } = await sql`
+    SELECT COUNT(*) FROM projects
+    WHERE (
+      title ILIKE ${searchQuery}
+      OR description ILIKE ${searchQuery}
+      OR array_to_string(technologies, ' ') ILIKE ${searchQuery}
+    )
+  `;
+
+  const totalItems = Number(rows[0].count);
+  return Math.ceil(totalItems / ITEMS_PER_PAGE);
 }
