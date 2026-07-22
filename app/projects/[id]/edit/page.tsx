@@ -82,7 +82,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           </Link>
           <button
             type="submit"
-            className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-all shadow-lg"
+            className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-all shadow-lg cursor-pointer"
           >
             Save Changes
           </button>

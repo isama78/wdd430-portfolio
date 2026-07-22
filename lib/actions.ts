@@ -38,18 +38,27 @@ export async function createProject(formData: FormData) {
 
   const formattedTechArray = `{${techList.join(",")}}`;
 
-  await sql`
-    INSERT INTO projects (title, description, technologies, link)
-    VALUES (${title}, ${description}, ${formattedTechArray}::text[], ${link})
-  `;
-
-  revalidatePath("/projects");
+  try {
+    await sql`
+      INSERT INTO projects (title, description, technologies, link)
+      VALUES (${title}, ${description}, ${formattedTechArray}::text[], ${link})
+    `;
+    revalidatePath("/projects");
+  } catch (error) {
+    console.error("Error creating project:", error);
+    throw new Error("Failed to create project.");
+  }
   redirect("/projects");
 }
 
 export async function deleteProject(id: number) {
-  await sql`DELETE FROM projects WHERE id = ${id}`;
-  revalidatePath("/projects");
+  try {
+    await sql`DELETE FROM projects WHERE id = ${id}`;
+    revalidatePath("/projects");
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    throw new Error("Failed to delete project.");
+  }
   redirect("/projects");
 }
 
@@ -78,12 +87,16 @@ export async function updateProject(id: number, formData: FormData) {
 
   const formattedTechArray = `{${techList.join(",")}}`;
 
-  await sql`
-    UPDATE projects
-    SET title = ${title}, description = ${description}, technologies = ${formattedTechArray}::text[], link = ${link}
-    WHERE id = ${id}
-  `;
-
-  revalidatePath("/projects");
+  try {
+    await sql`
+      UPDATE projects
+      SET title = ${title}, description = ${description}, technologies = ${formattedTechArray}::text[], link = ${link}
+      WHERE id = ${id}
+    `;
+    revalidatePath("/projects");
+  } catch (error) {
+    console.error("Error updating project:", error);
+    throw new Error("Failed to update project.");
+  }
   redirect("/projects");
 }

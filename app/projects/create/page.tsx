@@ -95,7 +95,7 @@ export default function CreateProjectPage() {
           </Link>
           <button
             type="submit"
-            className="px-6 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-all shadow-lg hover:shadow-indigo-500/20"
+            className="px-6 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-500 transition-all shadow-lg hover:shadow-indigo-500/20 cursor-pointer"
           >
             Save Project
           </button>
