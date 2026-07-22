@@ -53,7 +53,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           <input
             id="technologies"
             name="technologies"
-            // Si technologies es un array en tu DB, lo pasamos a string separado por comas para el input
             defaultValue={Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}
             required
             className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-foreground focus:outline-none focus:border-indigo-500"

@@ -12,7 +12,6 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // optionally log the error
     console.error("An uncaught error occurred:", error);
   }, [error]);
 

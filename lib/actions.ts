@@ -8,7 +8,6 @@ import { redirect } from "next/navigation";
 
 const currentYear = new Date().getFullYear();
 
-// Esquema Zod con mensajes accesibles
 const CreateProjectSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters."),
   description: z
@@ -26,7 +25,6 @@ const CreateProjectSchema = z.object({
     .or(z.literal(NaN)),
 });
 
-// 1. Tipo State que expone 'errors' y 'message' de forma opcional
 export type State = {
   errors?: {
     title?: string[];
@@ -38,7 +36,6 @@ export type State = {
   message?: string | null;
 };
 
-// 2. La función SIEMPRE devuelve Promise<State> (incluso dentro de la validación o try/catch)
 export async function createProject(
   prevState: State,
   formData: FormData,
@@ -51,7 +48,6 @@ export async function createProject(
     link: formData.get("link"),
   });
 
-  // Si falla la validación de Zod, retornamos los errores estructurados
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,

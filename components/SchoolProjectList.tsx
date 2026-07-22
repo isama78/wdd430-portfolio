@@ -10,6 +10,8 @@ export default async function SchoolProjectList() {
       {schoolProjects.map((project) => (
         <ProjectCard
           key={project.id}
+          id={project.id}
+          year_completed={project.year_completed}
           title={project.title}
           description={project.description}
           technologies={project.technologies}
