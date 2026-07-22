@@ -4,6 +4,7 @@ interface Project {
   id: number;
   title: string;
   description: string;
+  year_completed: number | null;
   technologies: string[];
   link?: string;
 }

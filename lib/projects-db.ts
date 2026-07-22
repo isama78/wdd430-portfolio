@@ -8,6 +8,7 @@ export interface Project {
   type: "opensource" | "school";
   technologies: string[];
   link?: string;
+  year_completed: number | null;
 }
 
 export async function getProjects(type?: string | null): Promise<Project[]> {
@@ -23,7 +24,7 @@ export async function getProjects(type?: string | null): Promise<Project[]> {
 
 export async function getProjectById(id: number): Promise<Project | null> {
   const { rows } = await sql<Project>`
-    SELECT * FROM projects WHERE id = ${id}
+    SELECT id, title, description, type, technologies, link, year_completed FROM projects WHERE id = ${id}
   `;
   return rows[0] ?? null;
 }

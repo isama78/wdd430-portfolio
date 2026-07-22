@@ -60,6 +60,19 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           />
         </div>
 
+        <div>
+          <label htmlFor="year_completed" className="block text-sm font-medium text-muted-custom mb-2">
+            Year Completed
+          </label>
+          <input
+            id="year_completed"
+            name="year_completed"
+            type="number"
+            defaultValue={project.year_completed?.toString() || ''}
+            className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-foreground focus:outline-none focus:border-indigo-500"
+          />
+        </div>
+
         {<div>
           <label htmlFor="link" className="block text-sm font-medium text-muted-custom mb-2">
             Link (optional)
